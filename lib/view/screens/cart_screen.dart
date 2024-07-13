@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanber_flutter_mini_project_1/bloc/cart/cart_bloc.dart';
 import 'package:sanber_flutter_mini_project_1/model/cart.dart';
 
-
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
@@ -138,7 +137,7 @@ class CartTile extends StatelessWidget {
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Image.network(product.image),
+                              Image.network(product.image, height: 100),
                               Text('Price: \$${product.price}'),
                               Text('Description: ${product.description}'),
                             ],
