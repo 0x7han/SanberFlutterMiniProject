@@ -7,6 +7,7 @@ import 'package:sanber_flutter_mini_project_1/model/product.dart';
 import 'package:sanber_flutter_mini_project_1/model/user.dart';
 import 'package:sanber_flutter_mini_project_1/view/screens/cart_screen.dart';
 import 'package:sanber_flutter_mini_project_1/view/screens/productdetail.dart';
+import 'package:sanber_flutter_mini_project_1/view/screens/profile_screen.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
@@ -34,7 +35,7 @@ class ProductScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 16),
                 decoration: BoxDecoration(
                     border: Border.all(
-                      color: colorScheme.surfaceContainerHighest,
+                      color: colorScheme.surfaceVariant,
                     ),
                     borderRadius: BorderRadius.circular(32)),
                 child: DropdownButtonHideUnderline(
@@ -81,7 +82,7 @@ class ProductScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 4),
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: colorScheme.surfaceContainerHighest.withOpacity(0.7),
+                  color: colorScheme.surfaceVariant.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
@@ -185,7 +186,7 @@ class ProductScreen extends StatelessWidget {
               margin: const EdgeInsets.only(right: 16),
               decoration: BoxDecoration(
                   border: Border.all(
-                    color: colorScheme.surfaceContainerHighest,
+                    color: colorScheme.surfaceVariant,
                   ),
                   borderRadius: BorderRadius.circular(32)),
               child: DropdownButtonHideUnderline(
@@ -224,7 +225,8 @@ class ProductScreen extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (_, index) {
               return Container(
-                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
@@ -355,7 +357,8 @@ class ProductScreen extends StatelessWidget {
                                 },
                                 icon: Badge(
                                   label: Text(state.totalQuantity.toString()),
-                                  child: const Icon(Icons.shopping_cart_outlined),
+                                  child:
+                                      const Icon(Icons.shopping_cart_outlined),
                                 ),
                               );
                             }
@@ -367,7 +370,7 @@ class ProductScreen extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const CartScreen()));
+                                    builder: (_) => const ProfileScreen()));
                           },
                           icon: const Icon(Icons.person_outline),
                         ),
