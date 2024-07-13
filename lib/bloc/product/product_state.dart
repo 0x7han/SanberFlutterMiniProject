@@ -38,14 +38,32 @@ class ProductLoaded extends ProductState {
     List<Product>? filteredProducts,
     String? selectedCategory,
     String? selectedSort,
-  }) => ProductLoaded(
-      allProducts: allProducts ?? this.allProducts,
-      filteredProducts: filteredProducts ?? this.filteredProducts,
-      selectedCategory: selectedCategory ?? this.selectedCategory,
-      selectedSort: selectedSort ?? this.selectedSort,
-    );
-  
+  }) =>
+      ProductLoaded(
+        allProducts: allProducts ?? this.allProducts,
+        filteredProducts: filteredProducts ?? this.filteredProducts,
+        selectedCategory: selectedCategory ?? this.selectedCategory,
+        selectedSort: selectedSort ?? this.selectedSort,
+      );
 
   @override
-  List<Object> get props => [allProducts, filteredProducts, selectedCategory, selectedSort];
+  List<Object> get props =>
+      [allProducts, filteredProducts, selectedCategory, selectedSort];
+}
+
+class ProductDetailLoaded extends ProductState {
+  final Product product;
+
+  const ProductDetailLoaded(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
+
+class ProductErrorState extends ProductState {
+  final String message;
+
+  const ProductErrorState(this.message);
+  @override
+  List<Object> get props => [message];
 }

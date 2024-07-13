@@ -9,7 +9,7 @@ class ProductRepository {
     "Content-Type": "application/json",
   };
 
-  Future<List<Product>> getAll() async {
+  Future<List<Product>> getProducts() async {
     var url = Uri.parse('$_baseUrl/products');
 
     final http.Response response = await http.get(url, headers: _headers);

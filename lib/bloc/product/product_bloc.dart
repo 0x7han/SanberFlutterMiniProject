@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sanber_flutter_mini_project_1/model/product.dart';
-import 'package:sanber_flutter_mini_project_1/repositories/cart_repository.dart';
 import 'package:sanber_flutter_mini_project_1/repositories/product_repository.dart';
 
 part 'product_event.dart';
@@ -15,7 +14,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<LoadProducts>((event, emit) async {
       emit(ProductLoading());
       try {
-        final List<Product> products = await _productRepository.getAll();
+        final List<Product> products = await _productRepository.getProducts();
         final List<String> categories =
             products.map((e) => e.category).toSet().toList();
         final List<Product> filteredProducts = products
@@ -70,6 +69,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           selectedCategory: event.category,
           filteredProducts: filteredProducts,
         ));
+      }
+    });
+
+    on<LoadProductDetail>((event, emit) async {
+      try {
+        final product = await _productRepository.getById(event.id);
+        emit(ProductDetailLoaded(product));
+      } catch (e) {
+        emit(ProductErrorState(e.toString()));
       }
     });
   }

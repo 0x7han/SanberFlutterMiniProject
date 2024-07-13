@@ -7,43 +7,36 @@ sealed class CartState extends Equatable {
   List<Object> get props => [];
 }
 
-final class CartInitial extends CartState {}
+final class LoadingCartState extends CartState {}
 
-class CartLoading extends CartState {}
-
-class CartLoaded extends CartState {
+final class LoadedCartState extends CartState {
   final List<Cart> carts;
-  final String selectedDate;
-
-  const CartLoaded({required this.carts, required this.selectedDate});
-
-  CartLoaded copyWith({
-    List<Cart>? carts,
-    String? selectedDate,
-  }) => CartLoaded(carts: carts ?? this.carts,
-  selectedDate: selectedDate ?? this.selectedDate);
-
+  const LoadedCartState(this.carts);
   @override
-  List<Object> get props => [carts, selectedDate];
+  List<Object> get props => [carts];
 }
 
-class CartError extends CartState {
-  final String error;
-
-  const CartError(this.error);
-
+final class CartErrorState extends CartState {
+  final String message;
+  const CartErrorState(this.message);
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [message];
+}
+
+final class LoadingProductState extends CartState {}
+
+final class LoadedProductState extends CartState {
+  final Product product;
+  const LoadedProductState(this.product);
+  @override
+  List<Object> get props => [product];
+}
+
+final class ProductErrorState extends CartState {
+  final String message;
+  const ProductErrorState(this.message);
+  @override
+  List<Object> get props => [message];
 }
 
 
-class CartRecentLoaded extends CartState {
-  final int userId;
-  final int count;
-  final String date;
-
-  const CartRecentLoaded({required this.userId, required this.count, required this.date});
-
-  @override
-  List<Object> get props => [userId, count, date];
-}

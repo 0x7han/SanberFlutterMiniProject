@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sanber_flutter_mini_project_1/bloc/cart/cart_bloc.dart';
+import 'package:sanber_flutter_mini_project_1/bloc/cubit/count_cart_cubit.dart';
 import 'package:sanber_flutter_mini_project_1/bloc/product/product_bloc.dart';
 import 'package:sanber_flutter_mini_project_1/bloc/user/user_bloc.dart';
 import 'package:sanber_flutter_mini_project_1/model/product.dart';
 import 'package:sanber_flutter_mini_project_1/model/user.dart';
 import 'package:sanber_flutter_mini_project_1/view/screens/cart_screen.dart';
+import 'package:sanber_flutter_mini_project_1/view/screens/productdetail.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
@@ -23,7 +21,7 @@ class ProductScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -32,11 +30,11 @@ class ProductScreen extends StatelessWidget {
                 style: textTheme.titleLarge,
               ),
               Container(
-                padding: EdgeInsets.only(left: 16, right: 8),
+                padding: const EdgeInsets.only(left: 16, right: 8),
                 margin: const EdgeInsets.only(right: 16),
                 decoration: BoxDecoration(
                     border: Border.all(
-                      color: colorScheme.surfaceVariant,
+                      color: colorScheme.surfaceContainerHighest,
                     ),
                     borderRadius: BorderRadius.circular(32)),
                 child: DropdownButtonHideUnderline(
@@ -70,7 +68,7 @@ class ProductScreen extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 8),
           height: size.height / 8,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -80,15 +78,23 @@ class ProductScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 width: 300,
                 height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 4),
-                padding: EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: colorScheme.surfaceVariant.withOpacity(0.7),
+                  color: colorScheme.surfaceContainerHighest.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ProductDetail(
+                                    productId: filteredProducts[index].id,
+                                  )));
+                    },
                     leading: SizedBox(
                       width: 64,
                       child: Image.network(
@@ -114,7 +120,7 @@ class ProductScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star_rounded,
                               color: Colors.amber,
                             ),
@@ -169,17 +175,17 @@ class ProductScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-                padding: EdgeInsets.only(top: 32, bottom: 16),
+                padding: const EdgeInsets.only(top: 32, bottom: 16),
                 child: Text(
                   'All products',
                   style: textTheme.titleLarge,
                 )),
             Container(
-              padding: EdgeInsets.only(left: 16, right: 8),
+              padding: const EdgeInsets.only(left: 16, right: 8),
               margin: const EdgeInsets.only(right: 16),
               decoration: BoxDecoration(
                   border: Border.all(
-                    color: colorScheme.surfaceVariant,
+                    color: colorScheme.surfaceContainerHighest,
                   ),
                   borderRadius: BorderRadius.circular(32)),
               child: DropdownButtonHideUnderline(
@@ -214,14 +220,22 @@ class ProductScreen extends StatelessWidget {
         ),
         ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: products.length,
             itemBuilder: (_, index) {
               return Container(
-                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ProductDetail(
+                                    productId: products[index].id,
+                                  )));
+                    },
                     leading: SizedBox(
                       width: 100,
                       child: Image.network(
@@ -260,7 +274,7 @@ class ProductScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star_rounded,
                               color: Colors.amber,
                             ),
@@ -329,29 +343,33 @@ class ProductScreen extends StatelessWidget {
                                 colorScheme.onSurfaceVariant.withOpacity(0.8)),
                       ),
                       actions: [
-                        BlocBuilder<CartBloc, CartState>(
-                          builder: (context, cartRecentDateState) {
-                            if(cartRecentDateState is CartRecentLoaded) {
-                    
-                                return IconButton(
-                              onPressed: () {
-                                context.read<CartBloc>().add(LoadCartByDate(cartRecentDateState.userId, cartRecentDateState.date));
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-                              },
-                              icon: Badge(
-                                label: Text(cartRecentDateState.count.toString()),
-                                child: Icon(Icons.shopping_cart_outlined),
-                              ),
-                            );
-                            } else {
-                              return CircularProgressIndicator();
+                        BlocBuilder<CountCartCubit, CountCartState>(
+                          builder: (context, state) {
+                            if (state is TotalQuantityLoaded) {
+                              return IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const CartScreen()));
+                                },
+                                icon: Badge(
+                                  label: Text(state.totalQuantity.toString()),
+                                  child: const Icon(Icons.shopping_cart_outlined),
+                                ),
+                              );
                             }
-                            
+                            return const CircularProgressIndicator();
                           },
                         ),
                         IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.person_outline),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const CartScreen()));
+                          },
+                          icon: const Icon(Icons.person_outline),
                         ),
                       ],
                     ),
@@ -384,14 +402,14 @@ class ProductScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               Expanded(
@@ -412,7 +430,7 @@ class ProductScreen extends StatelessWidget {
                         ),
                       );
                     } else {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   },
                 ),

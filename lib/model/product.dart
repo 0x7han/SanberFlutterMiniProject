@@ -22,7 +22,7 @@ class Product {
         'image' : String image,
         'rating' : Map<String, dynamic> rating,
       } => Product(id: id, title: title, price: price, description: description, category: category, image: image, rating: rating),
-      _ => throw FormatException('Failed to load Product'),
+      _ => throw const FormatException('Failed to load Product'),
     };
   }
 }

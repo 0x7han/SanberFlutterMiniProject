@@ -22,7 +22,7 @@ class User {
         'phone' : String phone,
         'address' : Map<String, dynamic> address,
       } => User(id: id, email: email, username: username, password: password, name: name, phone: phone, address: address),
-      _ => throw FormatException('Failed to load User'),
+      _ => throw const FormatException('Failed to load User'),
     };
   }
 }

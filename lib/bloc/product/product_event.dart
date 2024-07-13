@@ -27,3 +27,12 @@ class LoadProductByCategory extends ProductEvent {
   @override
   List<Object?> get props => [category];
 }
+
+class LoadProductDetail extends ProductEvent {
+  final int id;
+
+  const LoadProductDetail(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
